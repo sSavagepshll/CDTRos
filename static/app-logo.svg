@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="Marca do portal">
+  <defs>
+    <linearGradient id="a" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#315da8"/>
+      <stop offset="1" stop-color="#0f766e"/>
+    </linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="13" fill="url(#a)"/>
+  <path d="M15 16h18M15 24h18M15 32h11" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="3"/>
+  <circle cx="33" cy="32" r="2" fill="#fff"/>
+</svg>
