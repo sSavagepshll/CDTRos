@@ -1,0 +1,24 @@
+PORTAL DE CADASTRO — NOVA SOLICITAÇÃO DE PRODUTOS
+
+Uma nova solicitação aguarda análise da equipe de cadastro.
+
+SOLICITAÇÃO
+Identificador: {{ request_id }}
+Recebida em: {{ created_at }} (horário de Brasília)
+Quantidade de itens: {{ item_count }}
+
+SOLICITANTE
+Nome: {{ requester_name }}
+Email para contato: {{ requester_email }}
+
+ITENS ENVIADOS
+{% for item in items %}ITEM {{ "%02d"|format(item.number) }} — {{ item.summary }}
+Detalhes:
+{{ item.details }}
+
+{% endfor %}
+PRÓXIMOS PASSOS
+Localize {{ request_id }} no painel para consultar os detalhes e as imagens enviadas.
+Você pode responder a este email para entrar em contato com o solicitante.
+
+Esta mensagem é interna. Verifique os detalhes e as imagens no painel antes de processar o pedido.

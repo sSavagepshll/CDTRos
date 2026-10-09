@@ -1,0 +1,24 @@
+PORTAL DE CADASTRO — CONFIRMAÇÃO DE RECEBIMENTO
+
+Olá, {{ requester_name }}!
+
+Sua solicitação foi registrada no portal de cadastro. Guarde este número para referência:
+
+SOLICITAÇÃO: {{ request_id }}
+Recebida em: {{ created_at }} (horário de Brasília)
+Email informado: {{ requester_email }}
+Quantidade de itens: {{ item_count }}
+
+ITENS INFORMADOS
+{% for item in items %}ITEM {{ "%02d"|format(item.number) }} — {{ item.summary }}
+Detalhes:
+{{ item.details }}
+Imagem: recebida junto com os dados deste item.
+
+{% endfor %}
+O QUE ACONTECE AGORA?
+A equipe responsável irá analisar as informações recebidas.
+Esta mensagem confirma apenas o recebimento; o cadastro ainda não foi aprovado ou concluído.
+Se precisar complementar alguma informação, responda a este email.
+
+Esta mensagem foi enviada automaticamente pelo portal de cadastro de produtos.

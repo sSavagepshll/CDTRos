@@ -1,0 +1,34 @@
+{% extends "emails/base.html" %}
+{% block title %}Item cadastrado no sistema de destino · {{ request_id }}{% endblock %}
+{% block preview %}Produto no sistema de destino: {{ product_name }} · Código {{ product_code }}.{% endblock %}
+{% block content %}
+  <p style="margin:0 0 8px;color:#0f766e;font-size:10px;font-weight:bold;letter-spacing:1.5px;">ATUALIZAÇÃO DO CADASTRO</p>
+  <h1 style="margin:0 0 10px;color:#1b315f;font-size:25px;line-height:1.3;">Olá, {{ requester_name }}!</h1>
+  <p style="margin:0 0 22px;color:#69758e;font-size:14px;line-height:1.7;">A equipe responsável confirmou que o item abaixo foi cadastrado no sistema de destino.</p>
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:18px;border:1px solid #dce5f6;border-radius:9px;background-color:#f3f6fc;">
+    <tr><td style="padding:17px 18px;">
+      <p style="margin:0 0 6px;color:#7b87a0;font-size:10px;font-weight:bold;letter-spacing:1px;">SOLICITAÇÃO {{ request_id }} · ITEM {{ "%02d"|format(item_number) }}</p>
+      <p style="margin:0;color:#315da8;font-size:19px;font-weight:bold;">{{ item_summary }}</p>
+    </td></tr>
+  </table>
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:23px;border:2px solid #315da8;border-radius:10px;background-color:#f5f8ff;">
+    <tr><td style="padding:19px 20px;">
+      <p style="margin:0 0 7px;color:#0f766e;font-size:10px;font-weight:bold;letter-spacing:1.2px;">DADOS DO PRODUTO CADASTRADO</p>
+      <p style="margin:0 0 6px;color:#7b87a0;font-size:11px;font-weight:bold;">NOME DO PRODUTO</p>
+      <p style="margin:0 0 15px;color:#1b315f;font-size:18px;font-weight:bold;line-height:1.4;">{{ product_name }}</p>
+      <p style="margin:0 0 6px;color:#7b87a0;font-size:11px;font-weight:bold;">CÓDIGO DO PRODUTO</p>
+      <p style="margin:0;color:#315da8;font-size:24px;font-weight:bold;letter-spacing:.5px;">{{ product_code }}</p>
+    </td></tr>
+  </table>
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:23px;">
+    <tr><td style="padding:8px 0;width:145px;color:#7b87a0;font-size:12px;">Cadastrado em</td><td style="padding:8px 0;color:#303d59;font-size:13px;">{{ registered_at }} (horário de Brasília)</td></tr>
+    <tr><td style="padding:8px 0;color:#7b87a0;font-size:12px;">Sistema</td><td style="padding:8px 0;color:#303d59;font-size:13px;">Sistema de destino</td></tr>
+  </table>
+  <h2 style="margin:0 0 10px;color:#263552;font-size:15px;">Detalhes enviados</h2>
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border:1px solid #e5e9f0;border-radius:8px;">
+    <tr><td style="padding:15px 16px;color:#66728b;font-size:12px;line-height:1.7;white-space:pre-line;">{{ item_details }}</td></tr>
+  </table>
+  <div style="margin-top:21px;padding:15px 17px;border-left:3px solid #315da8;background-color:#f4f6fb;">
+    <p style="margin:0;color:#4a5874;font-size:12px;line-height:1.7;">Esta confirmação se refere somente ao item acima. Caso sua solicitação contenha outros itens, eles podem receber atualizações separadas. Se tiver dúvidas, responda a este email para falar com a equipe responsável.</p>
+  </div>
+{% endblock %}

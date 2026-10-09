@@ -1,0 +1,35 @@
+{% extends "emails/base.html" %}
+{% block title %}Nova solicitação {{ request_id }} · Portal de cadastro{% endblock %}
+{% block preview %}Nova solicitação {{ request_id }} de {{ requester_name }} com {{ item_count }} item(ns).{% endblock %}
+{% block content %}
+  <p style="margin:0 0 8px;color:#0f766e;font-size:10px;font-weight:bold;letter-spacing:1.5px;">NOVA SOLICITAÇÃO</p>
+  <h1 style="margin:0 0 10px;color:#1b315f;font-size:25px;line-height:1.3;">Recebemos um pedido de cadastro</h1>
+  <p style="margin:0 0 22px;color:#69758e;font-size:14px;line-height:1.7;">Uma nova solicitação aguarda análise pela equipe de cadastro. Use o identificador abaixo para localizá-la no painel.</p>
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:22px;border:1px solid #e1e7f2;border-radius:9px;background-color:#f6f8fc;">
+    <tr><td style="padding:17px 18px;">
+      <p style="margin:0 0 6px;color:#7b87a0;font-size:10px;font-weight:bold;letter-spacing:1px;">NÚMERO DA SOLICITAÇÃO</p>
+      <p style="margin:0;color:#315da8;font-size:22px;font-weight:bold;">{{ request_id }}</p>
+    </td></tr>
+  </table>
+  <h2 style="margin:0 0 12px;color:#263552;font-size:15px;">Dados de contato</h2>
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:23px;">
+    <tr><td style="padding:8px 0;width:145px;color:#7b87a0;font-size:12px;">Solicitante</td><td style="padding:8px 0;color:#303d59;font-size:13px;font-weight:bold;">{{ requester_name }}</td></tr>
+    <tr><td style="padding:8px 0;color:#7b87a0;font-size:12px;">Email para contato</td><td style="padding:8px 0;font-size:13px;"><a href="mailto:{{ requester_email }}" style="color:#315da8;text-decoration:none;">{{ requester_email }}</a></td></tr>
+    <tr><td style="padding:8px 0;color:#7b87a0;font-size:12px;">Recebida em</td><td style="padding:8px 0;color:#303d59;font-size:13px;">{{ created_at }} (horário de Brasília)</td></tr>
+    <tr><td style="padding:8px 0;color:#7b87a0;font-size:12px;">Quantidade de itens</td><td style="padding:8px 0;color:#303d59;font-size:13px;">{{ item_count }}</td></tr>
+  </table>
+  <h2 style="margin:0 0 12px;color:#263552;font-size:15px;">Itens enviados</h2>
+  {% for item in items %}
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:11px;border:1px solid #e5e9f0;border-radius:8px;">
+    <tr><td style="padding:15px 16px;">
+      <p style="margin:0 0 7px;color:#0f766e;font-size:10px;font-weight:bold;letter-spacing:1px;">ITEM {{ "%02d"|format(item.number) }}</p>
+      <p style="margin:0 0 8px;color:#263552;font-size:14px;font-weight:bold;">{{ item.summary }}</p>
+      <p style="margin:0;color:#66728b;font-size:12px;line-height:1.7;white-space:pre-line;">{{ item.details }}</p>
+    </td></tr>
+  </table>
+  {% endfor %}
+  <div style="margin-top:21px;padding:15px 17px;border-left:3px solid #315da8;background-color:#f4f6fb;">
+    <p style="margin:0;color:#4a5874;font-size:12px;line-height:1.7;"><strong>Próximos passos:</strong> consulte os detalhes e as imagens pelo identificador no painel. Para esclarecer informações com o solicitante, responda a esta mensagem: a resposta será direcionada ao email informado no formulário.</p>
+  </div>
+{% endblock %}
+{% block footer %}Esta mensagem é interna. Verifique os detalhes e as imagens no painel antes de processar o pedido.{% endblock %}

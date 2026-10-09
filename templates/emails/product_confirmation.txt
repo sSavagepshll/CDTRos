@@ -1,0 +1,23 @@
+PORTAL DE CADASTRO — PRODUTO CADASTRADO
+
+Olá, {{ requester_name }}!
+
+A equipe responsável confirmou que este item já foi cadastrado no sistema de destino.
+
+SOLICITAÇÃO: {{ request_id }}
+ITEM {{ "%02d"|format(item_number) }}: {{ item_summary }}
+Cadastrado em: {{ registered_at }} (horário de Brasília)
+Sistema: Sistema de destino
+
+========================================
+DADOS DO PRODUTO CADASTRADO
+Nome do produto: {{ product_name }}
+Código do produto: {{ product_code }}
+========================================
+
+DETALHES ENVIADOS
+{{ item_details }}
+
+Esta confirmação se refere somente ao item acima. Caso sua solicitação contenha outros itens,
+eles podem receber atualizações separadas. Se tiver dúvidas, responda a este email para falar
+com a equipe responsável.
