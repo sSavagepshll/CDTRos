@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}{{ registration.public_id }} · Cadastro de itens{% endblock %}
+{% block content %}
+<a class="back-link" href="{{ url_for('dashboard') }}">← Voltar às solicitações</a>
+<div class="dashboard-heading detail-heading">
+  <div><span class="eyebrow">PORTAL DE CADASTRO · DETALHES DA SOLICITAÇÃO</span><h1>{{ registration.public_id }}</h1><p class="muted">Enviada em {{ registration.created_at.strftime("%d/%m/%Y às %H:%M") }} UTC</p></div>
+  <span class="status-pill"><span></span> Recebida</span>
+</div>
+<section class="card requester-card">
+  <div class="section-heading"><span class="step">01</span><div><h2>Dados do solicitante</h2><p>Informações para contato</p></div></div>
+  <div class="requester-data"><div><span class="data-label">Nome completo</span><strong>{{ registration.requester_name }}</strong></div><div><span class="data-label">Email</span><a href="mailto:{{ registration.requester_email }}">{{ registration.requester_email }}</a></div></div>
+</section>
+<div class="section-heading detail-items-title"><span class="step">02</span><div><h2>Itens solicitados</h2><p>{{ registration.items|length }} {{ "item" if registration.items|length == 1 else "itens" }} · cada item pode ser atualizado separadamente após o cadastro no sistema de destino</p></div></div>
+<div class="detail-items">
+  {% for item in registration.items %}
+  <article class="card detail-item">
+    <div class="detail-image"><img src="{{ url_for('uploaded_image', filename=item.image_filename) }}" alt="Imagem do item {{ loop.index }}"></div>
+    <div class="detail-copy">
+      <span class="eyebrow">ITEM {{ "%02d"|format(loop.index) }}</span>
+      <h2>{{ item.summary }}</h2>
+      <span class="item-status {{ 'item-status-registered' if item.status == 'registered' else 'item-status-pending' }}">
+        <span></span>{{ "Cadastrado" if item.status == "registered" else "Aguardando cadastro" }}
+      </span>
+      <p class="detail-description">{{ item.details }}</p>
+      {% if item.status == "registered" %}
+        <div class="item-registration-info">
+          {% if item.product_name and item.product_code %}
+            <div class="registered-product">
+              <span class="data-label">Produto cadastrado</span>
+              <strong>{{ item.product_name }}</strong>
+              <span>Código: <b>{{ item.product_code }}</b></span>
+            </div>
+          {% else %}
+            <p class="email-pending">Nome e código do produto ainda não informados.</p>
+          {% endif %}
+          <p>Marcado em {{ item.registered_at.strftime("%d/%m/%Y às %H:%M") }} UTC{% if item.registered_by %} por {{ item.registered_by.email }}{% endif %}.</p>
+          {% if item.confirmation_sent_at %}
+            <p class="email-sent">Confirmação enviada em {{ item.confirmation_sent_at.strftime("%d/%m/%Y às %H:%M") }} UTC.</p>
+          {% else %}
+            <p class="email-pending">Email de confirmação pendente de envio.</p>
+            <form method="post" action="{{ url_for('resend_product_confirmation', item_id=item.id) }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button class="button button-secondary" type="submit">Tentar enviar confirmação</button>
+            </form>
+          {% endif %}
+          <a class="button button-secondary product-edit-link" href="{{ url_for('confirm_item_registration', item_id=item.id) }}" target="_blank" rel="noopener">Atualizar dados do produto <span aria-hidden="true">↗</span></a>
+        </div>
+      {% else %}
+        <div class="registration-action">
+          <p>Após concluir o cadastro no sistema de destino, informe o nome e o código gerado para incluir esses dados no email ao solicitante.</p>
+          <a class="button button-primary" href="{{ url_for('confirm_item_registration', item_id=item.id) }}" target="_blank" rel="noopener">Confirmar cadastro <span aria-hidden="true">↗</span></a>
+        </div>
+      {% endif %}
+    </div>
+  </article>
+  {% endfor %}
+</div>
+{% endblock %}

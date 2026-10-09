@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Cadastro de itens{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css', v=asset_version) }}">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="{{ url_for('index') }}" aria-label="Portal de cadastro de produtos">
+      <img class="brand-logo" src="{{ url_for('static', filename='app-logo.svg') }}" alt="Portal de cadastro de produtos">
+      <span class="brand-divider" aria-hidden="true"></span>
+      <span class="brand-label">Cadastro de itens</span>
+    </a>
+    <nav>
+      {% if session.get("admin_id") %}
+        <a href="{{ url_for('dashboard') }}">Solicitações</a>
+        <a href="{{ url_for('performance_dashboard') }}">Desempenho</a>
+        <form class="nav-form" method="post" action="{{ url_for('logout') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="nav-button" type="submit">Sair</button>
+        </form>
+      {% else %}
+        <a href="{{ url_for('login') }}">Acesso da equipe de cadastro</a>
+      {% endif %}
+    </nav>
+  </header>
+  <main class="page">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <section class="notices" aria-live="polite">
+          {% for category, message in messages %}
+            <div class="notice notice-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </section>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="footer">Portal de cadastro <span>•</span> Solicitação de produtos</footer>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

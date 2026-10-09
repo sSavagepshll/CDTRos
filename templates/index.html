@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Nova solicitação · Cadastro de itens{% endblock %}
+{% block content %}
+<section class="intro">
+  <span class="eyebrow">PORTAL DE CADASTRO · SOLICITAÇÃO DE PRODUTOS</span>
+  <h1>Solicite o cadastro<br>dos seus produtos.</h1>
+  <p>Envie as informações e imagens para a equipe responsável analisar sua solicitação.</p>
+  <div class="intro-meta"><span class="meta-dot"></span> Até {{ max_items }} itens por solicitação</div>
+</section>
+<form class="card request-form" method="post" action="{{ url_for('create_request') }}" enctype="multipart/form-data">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <input type="hidden" id="item-count" name="item_count" value="1">
+  <div class="section-heading"><span class="step">01</span><div><h2>Seus dados</h2><p>Como podemos entrar em contato?</p></div></div>
+  <div class="field-grid">
+    <label class="field field-wide">Nome completo<input type="text" name="requester_name" autocomplete="name" maxlength="120" placeholder="Ex.: Maria da Silva" required></label>
+    <label class="field field-wide">Email<input type="email" name="requester_email" autocomplete="email" maxlength="254" placeholder="voce@empresa.com.br" required></label>
+  </div>
+  <div class="divider"></div>
+  <div class="section-heading"><span class="step">02</span><div><h2>Itens para cadastro</h2><p>Adicione os itens que deseja cadastrar.</p></div></div>
+  <div id="items-container">
+    <section class="item-card" data-item-index="0">
+      <div class="item-top"><h3><span class="item-number">1</span> Item 1</h3><span class="item-limit">Obrigatório</span></div>
+      <label class="field">Resumo do item<input type="text" name="item_summary_0" maxlength="200" placeholder="Ex.: Cadeira de escritório ergonômica" required></label>
+      <label class="field">Detalhes do item<textarea name="item_details_0" rows="4" maxlength="5000" placeholder="Descreva características, medidas, materiais ou outras informações importantes." required></textarea><span class="hint">Até 5.000 caracteres</span></label>
+      <label class="field">Imagem do item (obrigatória)
+        <span class="upload-box">
+          <span class="upload-icon">↑</span>
+          <span class="upload-copy"><strong data-upload-name>Escolha uma imagem</strong><small data-upload-hint>Obrigatória · JPG, PNG ou WEBP · até 10 MB</small></span>
+          <input type="file" name="item_image_0" accept="image/jpeg,image/png,image/webp" aria-label="Imagem do item 1" required>
+          <img class="upload-preview" data-upload-preview alt="Prévia da imagem selecionada" hidden>
+        </span>
+        <span class="upload-error" data-upload-error role="status" hidden></span>
+      </label>
+    </section>
+  </div>
+  <button class="add-item" id="add-item" type="button"><span>＋</span> Adicionar outro item <small>({{ max_items }} no máximo)</small></button>
+  <div class="submit-row"><p>Ao enviar, sua solicitação será encaminhada para análise.</p><button class="button button-primary" type="submit">Enviar solicitação <span>→</span></button></div>
+</form>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='form.js') }}" defer></script>{% endblock %}

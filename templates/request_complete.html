@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Solicitação recebida · Cadastro de itens{% endblock %}
+{% block content %}
+<section class="completion-page">
+  <div class="completion-confetti" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  <article class="card completion-card">
+    <div class="completion-check" aria-hidden="true">
+      <svg viewBox="0 0 64 64" focusable="false"><circle cx="32" cy="32" r="27"></circle><path d="m19 32 9 9 18-19"></path></svg>
+    </div>
+    <span class="eyebrow">PORTAL DE CADASTRO · SOLICITAÇÃO ENVIADA</span>
+    <h1>Pronto! Recebemos<br>sua solicitação.</h1>
+    <p class="completion-lead">Obrigado por enviar os dados. Nossa equipe já pode iniciar a análise das informações dos seus itens.</p>
+    <div class="completion-protocol">
+      <span>SEU PROTOCOLO</span>
+      <strong>{{ completion.request_id }}</strong>
+      <small>Guarde este número para acompanhar sua solicitação.</small>
+    </div>
+    <div class="completion-details">
+      <div><span class="completion-detail-icon" aria-hidden="true">▦</span><span><strong>{{ completion.item_count }} {{ "item enviado" if completion.item_count == 1 else "itens enviados" }}</strong><small>Dados e imagens recebidos para análise</small></span></div>
+      {% if completion.email_sent %}
+        <div><span class="completion-detail-icon completion-email-icon" aria-hidden="true">✉</span><span><strong>Confirmação enviada por email</strong><small>Confira também a caixa de spam ou lixo eletrônico.</small></span></div>
+      {% else %}
+        <div><span class="completion-detail-icon completion-warning-icon" aria-hidden="true">!</span><span><strong>Solicitação salva com sucesso</strong><small>Não foi possível enviar uma das notificações por email. A equipe responsável foi avisada.</small></span></div>
+      {% endif %}
+    </div>
+    <div class="completion-next">
+      <span class="completion-next-number">01</span>
+      <p><strong>O que acontece agora?</strong><br>A equipe responsável vai revisar os dados e cadastrar os produtos no sistema da organização. Você receberá novas atualizações por email.</p>
+    </div>
+    <a class="button button-primary completion-button" href="{{ url_for('index') }}">Fazer outra solicitação <span aria-hidden="true">→</span></a>
+    <p class="completion-footer">Protocolo para referência: <strong>{{ completion.request_id }}</strong></p>
+  </article>
+</section>
+{% endblock %}

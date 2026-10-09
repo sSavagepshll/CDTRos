@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Confirmar cadastro do produto · {{ registration.public_id }}{% endblock %}
+{% block content %}
+<a class="back-link" href="{{ url_for('request_detail', request_id=registration.id) }}">← Voltar à solicitação</a>
+<section class="card product-confirm-card">
+  <span class="eyebrow">PORTAL DE CADASTRO · CONFIRMAÇÃO DO PRODUTO</span>
+  <h1>{{ "Dados do produto cadastrado" if item.status == "registered" else "Confirmar cadastro do produto" }}</h1>
+  <p class="muted">Informe os dados que o solicitante precisará para localizar o produto no sistema de destino.</p>
+  <div class="product-source">
+    <span class="data-label">Solicitação {{ registration.public_id }} · Item {{ "%02d"|format(item_number) }}</span>
+    <strong>{{ item.summary }}</strong>
+  </div>
+  {% if item.status == "registered" %}
+    <div class="notice notice-warning product-resend-note">
+      Ao salvar, o email de confirmação será enviado novamente com o nome e o código do produto atualizados.
+    </div>
+  {% else %}
+    <p class="product-confirm-guidance">Confirme somente após concluir o cadastro deste item no sistema de destino.</p>
+  {% endif %}
+  <form class="product-confirm-form" method="post" action="{{ url_for('mark_item_registered', item_id=item.id) }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label class="field">Nome do produto no sistema de destino
+      <input type="text" name="product_name" maxlength="{{ max_product_name_length }}" autocomplete="off" value="{{ item.product_name or '' }}" placeholder="Nome usado no cadastro do sistema de destino" required autofocus>
+    </label>
+    <label class="field">Código do produto no sistema de destino
+      <input type="text" name="product_code" maxlength="{{ max_product_code_length }}" autocomplete="off" value="{{ item.product_code or '' }}" placeholder="Código gerado pelo sistema de destino" required>
+    </label>
+    <div class="product-confirm-footer">
+      <span>Essas informações serão destacadas no email ao solicitante.</span>
+      <button class="button button-primary" type="submit">{{ "Salvar e reenviar email" if item.status == "registered" else "Confirmar e enviar email" }} <span>→</span></button>
+    </div>
+  </form>
+</section>
+{% endblock %}

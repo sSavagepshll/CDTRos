@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Painel · Cadastro de itens{% endblock %}
+{% block content %}
+<div class="dashboard-heading">
+  <div><span class="eyebrow">PORTAL DE CADASTRO · PAINEL DA EQUIPE</span><h1>Solicitações</h1><p class="muted">Acompanhe os pedidos recebidos para cadastro de produtos.</p></div>
+  <div class="count-card"><strong>{{ pending_count + completed_count }}</strong><span>{{ "solicitação" if pending_count + completed_count == 1 else "solicitações" }} no total</span></div>
+</div>
+<nav class="request-tabs" aria-label="Filtrar solicitações">
+  <a class="request-tab {{ 'active' if status == 'pending' else '' }}" href="{{ url_for('dashboard', status='pending') }}" {% if status == 'pending' %}aria-current="page"{% endif %}>
+    Pendentes <span>{{ pending_count }}</span>
+  </a>
+  <a class="request-tab {{ 'active' if status == 'completed' else '' }}" href="{{ url_for('dashboard', status='completed') }}" {% if status == 'completed' %}aria-current="page"{% endif %}>
+    Concluídas <span>{{ completed_count }}</span>
+  </a>
+</nav>
+<section class="card table-card">
+  {% if registrations %}
+  <div class="table-scroll"><table>
+    <thead><tr><th>Solicitação</th><th>Solicitante</th><th>Data de envio</th><th>Status dos itens</th><th></th></tr></thead>
+    <tbody>{% for registration in registrations %}
+      <tr>
+        <td><span class="request-id">{{ registration.public_id }}</span></td>
+        <td><strong>{{ registration.requester_name }}</strong><span class="table-sub">{{ registration.requester_email }}</span></td>
+        <td>{{ registration.created_at.strftime("%d/%m/%Y · %H:%M") }} UTC</td>
+        <td><span class="count-pill">{{ registration.items|selectattr("status", "equalto", "registered")|list|length }}/{{ registration.items|length }} cadastrados</span><span class="table-sub">no sistema de destino</span></td>
+        <td><a class="text-link" href="{{ url_for('request_detail', request_id=registration.id) }}">Ver detalhes <span>→</span></a></td>
+      </tr>
+    {% endfor %}</tbody>
+  </table></div>
+  {% else %}
+  <div class="empty-state"><span class="empty-icon">⌕</span><h2>{{ "Nenhuma solicitação pendente" if status == "pending" else "Nenhuma solicitação concluída" }}</h2><p>{{ "Novas solicitações e itens que ainda aguardam cadastro no sistema de destino aparecerão aqui." if status == "pending" else "Quando todos os itens de uma solicitação forem cadastrados no sistema de destino, ela aparecerá aqui." }}</p>{% if status == "pending" %}<a class="text-link" href="{{ url_for('index') }}">Ver formulário <span>→</span></a>{% endif %}</div>
+  {% endif %}
+</section>
+{% endblock %}

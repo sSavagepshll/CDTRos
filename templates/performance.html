@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Desempenho · Cadastro de itens{% endblock %}
+{% block content %}
+<div class="dashboard-heading performance-heading">
+  <div>
+    <span class="eyebrow">PORTAL DE CADASTRO · INDICADORES</span>
+    <h1>Desempenho de cadastro</h1>
+    <p class="muted">Acompanhe o volume de solicitações e os itens confirmados no sistema de destino.</p>
+  </div>
+  <div class="period-label">Últimos 30 dias <span>{{ period_start }} — {{ period_end }}</span></div>
+</div>
+<section class="metric-grid" aria-label="Indicadores de desempenho">
+  <article class="card metric-card">
+    <span class="metric-accent metric-accent-blue"></span>
+    <span class="metric-label">Solicitações recebidas</span>
+    <strong>{{ requests_total }}</strong>
+    <span class="metric-caption">nos últimos 30 dias</span>
+  </article>
+  <article class="card metric-card">
+    <span class="metric-accent metric-accent-red"></span>
+    <span class="metric-label">Itens cadastrados no sistema de destino</span>
+    <strong>{{ items_total }}</strong>
+    <span class="metric-caption">nos últimos 30 dias</span>
+  </article>
+  <article class="card metric-card">
+    <span class="metric-accent metric-accent-gold"></span>
+    <span class="metric-label">Solicitações pendentes</span>
+    <strong>{{ pending_count }}</strong>
+    <span class="metric-caption">com itens aguardando cadastro</span>
+  </article>
+  <article class="card metric-card">
+    <span class="metric-accent metric-accent-green"></span>
+    <span class="metric-label">Solicitações concluídas</span>
+    <strong>{{ completed_count }}</strong>
+    <span class="metric-caption">todos os itens cadastrados</span>
+  </article>
+</section>
+<section class="donut-grid" aria-label="Visão geral do cadastro">
+  <article class="card donut-card">
+    <div class="chart-heading">
+      <div><span class="eyebrow">VISÃO GERAL</span><h2>Progresso dos cadastros</h2><p>Proporção de itens já cadastrados no sistema de destino</p></div>
+    </div>
+    <div class="donut-content">
+      <div class="donut-chart donut-items" data-donut-value="{{ item_completion_percentage }}" role="img" aria-label="{{ item_completion_percentage }}% dos itens cadastrados no sistema de destino">
+        <svg class="donut-svg" viewBox="0 0 120 120" aria-hidden="true"><circle class="donut-track" cx="60" cy="60" r="52"></circle><circle class="donut-progress" cx="60" cy="60" r="52"></circle></svg>
+        <div class="donut-center"><strong>{{ item_completion_percentage }}%</strong><span>cadastrados</span></div>
+      </div>
+      <div class="donut-legend">
+        <div><span class="legend-dot legend-registered"></span><span>Cadastrados no sistema de destino</span><strong>{{ registered_item_count }}</strong></div>
+        <div><span class="legend-dot legend-pending"></span><span>Aguardando cadastro</span><strong>{{ total_item_count - registered_item_count }}</strong></div>
+        <div class="donut-total">Total de itens <strong>{{ total_item_count }}</strong></div>
+        <div class="donut-request-summary"><span>Solicitações concluídas</span><strong>{{ completed_count }} / {{ total_requests }}</strong></div>
+        <div class="donut-request-summary"><span>Solicitações pendentes</span><strong>{{ pending_count }}</strong></div>
+      </div>
+    </div>
+  </article>
+</section>
+<section class="card chart-card">
+  <div class="chart-heading">
+    <div><span class="eyebrow">ÚLTIMOS 30 DIAS</span><h2>Atividade diária</h2><p>Solicitações recebidas e itens cadastrados no sistema de destino</p></div>
+    <div class="chart-legend"><span><i class="legend-dot legend-requests"></i>Solicitações</span><span><i class="legend-dot legend-items"></i>Itens cadastrados</span></div>
+  </div>
+  <div class="chart-wrap">
+    <div id="performance-chart" class="performance-chart" role="img" aria-label="Gráfico diário de solicitações recebidas e itens cadastrados nos últimos 30 dias"></div>
+  </div>
+  <p class="chart-footnote">O cadastro no sistema de destino é confirmado manualmente pela equipe no painel. Os números de itens refletem essas confirmações registradas.</p>
+  <script id="performance-data" type="application/json">{{ daily_data|tojson }}</script>
+</section>
+<div class="performance-link-row">
+  <a class="text-link" href="{{ url_for('dashboard') }}">Acompanhar solicitações <span>→</span></a>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='performance.js', v=asset_version) }}" defer></script>{% endblock %}
